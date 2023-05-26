@@ -3,7 +3,7 @@ const fs = require('fs');
 
 function createRandomMerchant() {
   return {
-    merchantId: faker.string.uuid(),
+    id: faker.string.uuid(),
     firstName: faker.person.firstName(),
     middleName: faker.person.middleName(),
     lastName: faker.person.lastName(),
@@ -19,10 +19,6 @@ function createRandomMerchant() {
     postalAddress: faker.location.zipCode(),
   };
 }
-
-// return {
-//   merchants: ,
-// };
 
 const data = {
   merchants: faker.helpers.multiple(createRandomMerchant, { count: 50 }),
