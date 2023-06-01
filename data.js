@@ -17,6 +17,7 @@ function createRandomMerchant() {
     region: faker.location.state(),
     category: faker.helpers.arrayElement(['Gold', 'Silver', 'Bronze']),
     postalAddress: faker.location.zipCode(),
+    createdAt: faker.date.past(),
   };
 }
 
