@@ -17,12 +17,27 @@ function createRandomMerchant() {
     region: faker.location.state(),
     category: faker.helpers.arrayElement(['Gold', 'Silver', 'Bronze']),
     postalAddress: faker.location.zipCode(),
+    postalCode: faker.location.zipCode(),
     createdAt: faker.date.past(),
+  };
+}
+
+function createRandomShop() {
+  return {
+    id: faker.string.uuid(),
+    name: faker.lorem.word(),
+    type: faker.helpers.arrayElement(['Wholesale', 'Retail']),
+    phoneNumber: faker.phone.number(),
+    address: faker.location.streetAddress(),
+    postalAddress: faker.location.zipCode(),
+    postalCode: faker.location.zipCode(),
+    city: faker.location.city(),
   };
 }
 
 const data = {
   merchants: faker.helpers.multiple(createRandomMerchant, { count: 50 }),
+  shops: faker.helpers.multiple(createRandomShop, { count: 50 }),
 };
 
 fs.writeFile('db.json', JSON.stringify(data), (err) => {
