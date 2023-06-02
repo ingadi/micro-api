@@ -1,9 +1,11 @@
 const { faker } = require('@faker-js/faker');
 const fs = require('fs');
 
+const merchantIds = Array.from({ length: 50 }, () => faker.string.uuid());
+
 function createRandomMerchant() {
   return {
-    id: faker.string.uuid(),
+    id: faker.helpers.arrayElement(merchantIds),
     firstName: faker.person.firstName(),
     middleName: faker.person.middleName(),
     lastName: faker.person.lastName(),
@@ -32,6 +34,7 @@ function createRandomShop() {
     postalAddress: faker.location.zipCode(),
     postalCode: faker.location.zipCode(),
     city: faker.location.city(),
+    merchantId: faker.helpers.arrayElement(merchantIds),
   };
 }
 
