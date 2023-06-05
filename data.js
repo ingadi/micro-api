@@ -38,6 +38,17 @@ function createRandomShop() {
   };
 }
 
+function createRandomUser() {
+  return {
+    id: faker.string.uuid(),
+    firstName: faker.person.firstName(),
+    lastName: faker.person.lastName(),
+    userRole: faker.helpers.arrayElement(['Admin', 'Merchant']),
+    phoneNumber: faker.phone.number(),
+    status: faker.helpers.arrayElement(['Active', 'Inactive']),
+  };
+}
+
 const data = {
   merchants: faker.helpers.multiple(createRandomMerchant, { count: 50 }),
   shops: faker.helpers.multiple(createRandomShop, { count: 50 }),
