@@ -35,6 +35,7 @@ function createRandomShop() {
     postalCode: faker.location.zipCode(),
     city: faker.location.city(),
     merchantId: faker.helpers.arrayElement(merchantIds),
+    createdAt: faker.date.past(),
   };
 }
 
@@ -42,16 +43,23 @@ function createRandomUser() {
   return {
     id: faker.string.uuid(),
     firstName: faker.person.firstName(),
+    middleName: faker.person.middleName(),
     lastName: faker.person.lastName(),
-    userRole: faker.helpers.arrayElement(['Admin', 'Merchant']),
+    role: faker.helpers.arrayElement(['Admin', 'Merchant']),
     phoneNumber: faker.phone.number(),
     status: faker.helpers.arrayElement(['Active', 'Inactive']),
+    username: faker.internet.userName(),
+    idNo: faker.helpers.regexpStyleStringParse(
+      '[1-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+    ),
+    createdAt: faker.date.past(),
   };
 }
 
 const data = {
   merchants: faker.helpers.multiple(createRandomMerchant, { count: 50 }),
   shops: faker.helpers.multiple(createRandomShop, { count: 50 }),
+  users: faker.helpers.multiple(createRandomUser, { count: 50 }),
 };
 
 fs.writeFile('db.json', JSON.stringify(data), (err) => {
