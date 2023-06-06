@@ -60,7 +60,7 @@ function createRandomUser() {
 
 function createRandomConsumer() {
   return {
-    id: faker.helpers.arrayElement(merchantIds),
+    id: faker.helpers.arrayElement(consumerIds),
     firstName: faker.person.firstName(),
     middleName: faker.person.middleName(),
     lastName: faker.person.lastName(),
