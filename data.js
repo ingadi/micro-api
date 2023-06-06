@@ -75,6 +75,7 @@ function createRandomConsumer() {
     city: faker.location.state(),
     town: faker.location.city(),
     region: faker.location.state(),
+    merchantId: faker.helpers.arrayElement(merchantIds),
     createdAt: faker.date.past(),
   };
 }
@@ -83,6 +84,7 @@ function createRandomCredit() {
   return {
     id: faker.helpers.arrayElement(creditIds),
     consumerId: faker.helpers.arrayElement(consumerIds),
+    merchantId: faker.helpers.arrayElement(merchantIds),
     amount: faker.finance.amount(),
     points: faker.number.int({ min: 500, max: 2000 }),
     interestRate: faker.number.float({ min: 0, max: 5, precision: 0.1 }),
