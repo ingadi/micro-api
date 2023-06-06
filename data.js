@@ -98,7 +98,7 @@ const data = {
   shops: faker.helpers.multiple(createRandomShop, { count: 50 }),
   users: faker.helpers.multiple(createRandomUser, { count: 50 }),
   consumers: faker.helpers.multiple(createRandomConsumer, { count: 50 }),
-  credits: faker.helpers.multiple(createRandomCredit, { count: 50 }),
+  credit: faker.helpers.multiple(createRandomCredit, { count: 50 }),
 };
 
 fs.writeFile('db.json', JSON.stringify(data), (err) => {
