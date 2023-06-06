@@ -85,8 +85,8 @@ function createRandomCredit() {
     id: faker.helpers.arrayElement(creditIds),
     merchantId: faker.helpers.arrayElement(merchantIds),
     amount: faker.finance.amount(),
-    points: faker.number.float({ min: 0, max: 5, precision: 0.1 }),
-    interestRate: faker.number.int(),
+    points: faker.number.int({ min: 500, max: 2000 }),
+    internet: faker.number.float({ min: 0, max: 5, precision: 0.1 }),
     createdAt: faker.date.past(),
   };
 }
