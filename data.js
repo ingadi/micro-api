@@ -56,10 +56,32 @@ function createRandomUser() {
   };
 }
 
+function createRandomConsumer() {
+  return {
+    id: faker.string.uuid(),
+    firstName: faker.person.firstName(),
+    middleName: faker.person.middleName(),
+    lastName: faker.person.lastName(),
+    phoneNumber: faker.phone.number(),
+    idNo: faker.helpers.regexpStyleStringParse(
+      '[1-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+    ),
+    nationality: faker.location.country(),
+    email: faker.internet.email(),
+    postalAddress: faker.location.zipCode(),
+    postalCode: faker.location.zipCode(),
+    city: faker.location.state(),
+    town: faker.location.city(),
+    region: faker.location.state(),
+    createdAt: faker.date.past(),
+  };
+}
+
 const data = {
   merchants: faker.helpers.multiple(createRandomMerchant, { count: 50 }),
   shops: faker.helpers.multiple(createRandomShop, { count: 50 }),
   users: faker.helpers.multiple(createRandomUser, { count: 50 }),
+  consumers: faker.helpers.multiple(createRandomConsumer, { count: 50 }),
 };
 
 fs.writeFile('db.json', JSON.stringify(data), (err) => {
