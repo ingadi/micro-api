@@ -86,6 +86,7 @@ function createRandomCredit() {
     amount: faker.finance.amount(),
     points: faker.number.int({ min: 500, max: 2000 }),
     interestRate: faker.number.float({ min: 0, max: 5, precision: 0.1 }),
+    status: faker.helpers.arrayElement(['Active', 'Inactive']),
     createdAt: faker.date.past(),
   };
 }
