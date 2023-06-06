@@ -2,6 +2,8 @@ const { faker } = require('@faker-js/faker');
 const fs = require('fs');
 
 const merchantIds = Array.from({ length: 50 }, () => faker.string.uuid());
+const creditIds = Array.from({ length: 50 }, () => faker.string.uuid());
+const consumerIds = Array.from({ length: 50 }, () => faker.string.uuid());
 
 function createRandomMerchant() {
   return {
@@ -58,7 +60,7 @@ function createRandomUser() {
 
 function createRandomConsumer() {
   return {
-    id: faker.string.uuid(),
+    id: faker.helpers.arrayElement(merchantIds),
     firstName: faker.person.firstName(),
     middleName: faker.person.middleName(),
     lastName: faker.person.lastName(),
@@ -73,6 +75,18 @@ function createRandomConsumer() {
     city: faker.location.state(),
     town: faker.location.city(),
     region: faker.location.state(),
+    creditId: faker.helpers.arrayElement(creditIds),
+    createdAt: faker.date.past(),
+  };
+}
+
+function createRandomCredit() {
+  return {
+    id: faker.helpers.arrayElement(creditIds),
+    merchantId: faker.helpers.arrayElement(merchantIds),
+    amount: faker.finance.amount(),
+    points: faker.number.float({ min: 0, max: 5, precision: 0.1 }),
+    interestRate: faker.number.int(),
     createdAt: faker.date.past(),
   };
 }
@@ -82,6 +96,7 @@ const data = {
   shops: faker.helpers.multiple(createRandomShop, { count: 50 }),
   users: faker.helpers.multiple(createRandomUser, { count: 50 }),
   consumers: faker.helpers.multiple(createRandomConsumer, { count: 50 }),
+  credits: faker.helpers.multiple(createRandomCredit, { count: 50 }),
 };
 
 fs.writeFile('db.json', JSON.stringify(data), (err) => {
