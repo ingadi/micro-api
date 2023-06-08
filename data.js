@@ -31,7 +31,9 @@ function createRandomShop() {
     id: faker.string.uuid(),
     name: faker.lorem.word(),
     type: faker.helpers.arrayElement(['Wholesale', 'Retail']),
-    phoneNumber: faker.phone.number(),
+    phoneNumber: faker.helpers.regexpStyleStringParse(
+      '07[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+    ),
     address: faker.location.streetAddress(),
     postalAddress: faker.location.zipCode(),
     postalCode: faker.location.zipCode(),
@@ -47,10 +49,12 @@ function createRandomUser() {
     firstName: faker.person.firstName(),
     middleName: faker.person.middleName(),
     lastName: faker.person.lastName(),
-    role: faker.helpers.arrayElement(['Admin', 'Merchant']),
+    role: faker.helpers.arrayElement(['Qitabu admin', 'Merchant admin']),
     phoneNumber: faker.phone.number(),
     status: faker.helpers.arrayElement(['Active', 'Inactive']),
     username: faker.internet.userName(),
+    employeeNumber: `${faker.number.int({ min: 500, max: 2000 })}`,
+    defaultPassword: faker.string.alpha(7),
     idNo: faker.helpers.regexpStyleStringParse(
       '[1-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
     ),
@@ -85,10 +89,11 @@ function createRandomCredit() {
     id: faker.helpers.arrayElement(creditIds),
     consumerId: faker.helpers.arrayElement(consumerIds),
     merchantId: faker.helpers.arrayElement(merchantIds),
-    amount: faker.finance.amount(),
-    points: faker.number.int({ min: 500, max: 2000 }),
-    interestRate: faker.number.float({ min: 0, max: 5, precision: 0.1 }),
+    amount: `${faker.finance.amount()}`,
+    points: `${faker.number.int({ min: 500, max: 2000 })}`,
+    interestRate: `${faker.number.float({ min: 0, max: 5, precision: 0.1 })}`,
     status: faker.helpers.arrayElement(['Active', 'Inactive']),
+    expiry: faker.date.soon(),
     createdAt: faker.date.past(),
   };
 }
