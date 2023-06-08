@@ -12,7 +12,9 @@ function createRandomMerchant() {
     middleName: faker.person.middleName(),
     lastName: faker.person.lastName(),
     email: faker.internet.email(),
-    phoneNumber: faker.phone.number(),
+    phoneNumber: faker.helpers.regexpStyleStringParse(
+      '07[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+    ),
     idNo: faker.helpers.regexpStyleStringParse(
       '[1-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
     ),
@@ -50,7 +52,9 @@ function createRandomUser() {
     middleName: faker.person.middleName(),
     lastName: faker.person.lastName(),
     role: faker.helpers.arrayElement(['Qitabu admin', 'Merchant admin']),
-    phoneNumber: faker.phone.number(),
+    phoneNumber: faker.helpers.regexpStyleStringParse(
+      '07[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+    ),
     status: faker.helpers.arrayElement(['Active', 'Inactive']),
     username: faker.internet.userName(),
     employeeNumber: `${faker.number.int({ min: 500, max: 2000 })}`,
@@ -68,7 +72,9 @@ function createRandomConsumer() {
     firstName: faker.person.firstName(),
     middleName: faker.person.middleName(),
     lastName: faker.person.lastName(),
-    phoneNumber: faker.phone.number(),
+    phoneNumber: faker.helpers.regexpStyleStringParse(
+      '07[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+    ),
     idNo: faker.helpers.regexpStyleStringParse(
       '[1-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
     ),
