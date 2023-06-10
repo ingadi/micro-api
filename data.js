@@ -31,6 +31,7 @@ function createRandomMerchant() {
 function createRandomShop() {
   return {
     id: faker.string.uuid(),
+    code: faker.string.numeric({ length: { max: 5 } }),
     name: faker.lorem.word(),
     type: faker.helpers.arrayElement(['Wholesale', 'Retail']),
     phoneNumber: faker.helpers.regexpStyleStringParse(
@@ -78,7 +79,7 @@ function createRandomConsumer() {
     idNo: faker.helpers.regexpStyleStringParse(
       '[1-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
     ),
-    nationality: faker.location.country(),
+    country: faker.location.country(),
     email: faker.internet.email(),
     postalAddress: faker.location.zipCode(),
     postalCode: faker.location.zipCode(),
@@ -95,7 +96,6 @@ function createRandomCredit() {
     id: faker.helpers.arrayElement(creditIds),
     consumerId: faker.helpers.arrayElement(consumerIds),
     merchantId: faker.helpers.arrayElement(merchantIds),
-    amount: `${faker.finance.amount()}`,
     points: `${faker.number.int({ min: 500, max: 2000 })}`,
     interestRate: `${faker.number.float({ min: 0, max: 5, precision: 0.1 })}`,
     status: faker.helpers.arrayElement(['Active', 'Inactive']),
