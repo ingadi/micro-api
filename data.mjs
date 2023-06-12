@@ -1,9 +1,12 @@
-const { faker } = require('@faker-js/faker');
-const fs = require('fs');
+import { faker } from '@faker-js/faker';
+import fs from 'fs';
+import { genSaltSync, hashSync } from 'bcrypt-ts';
 
+const salt = genSaltSync(10);
 const merchantIds = Array.from({ length: 50 }, () => faker.string.uuid());
 const creditIds = Array.from({ length: 50 }, () => faker.string.uuid());
 const consumerIds = Array.from({ length: 50 }, () => faker.string.uuid());
+const passwords = [];
 
 function createRandomMerchant() {
   return {
@@ -20,6 +23,7 @@ function createRandomMerchant() {
     ),
     country: faker.location.country(),
     city: faker.location.city(),
+    town: faker.location.city(),
     region: faker.location.state(),
     category: faker.helpers.arrayElement(['Gold', 'Silver', 'Bronze']),
     postalAddress: faker.location.zipCode(),
@@ -47,6 +51,11 @@ function createRandomShop() {
 }
 
 function createRandomUser() {
+  const password = faker.string.alpha(7);
+  const username = faker.internet.userName();
+
+  passwords.push({ username, password });
+
   return {
     id: faker.string.uuid(),
     firstName: faker.person.firstName(),
@@ -59,7 +68,7 @@ function createRandomUser() {
     status: faker.helpers.arrayElement(['Active', 'Inactive']),
     username: faker.internet.userName(),
     employeeNumber: `${faker.number.int({ min: 500, max: 2000 })}`,
-    defaultPassword: faker.string.alpha(7),
+    password: hashSync(password, salt),
     idNo: faker.helpers.regexpStyleStringParse(
       '[1-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
     ),
@@ -117,5 +126,13 @@ fs.writeFile('db.json', JSON.stringify(data), (err) => {
     console.error('Error creating db.json file:', err);
   } else {
     console.log('db.json file created successfully.');
+  }
+});
+
+fs.writeFile('user-passwords.json', JSON.stringify(passwords), (err) => {
+  if (err) {
+    console.error('Error creating user-passwords.json file:', err);
+  } else {
+    console.log('user-passwords.json file created successfully.');
   }
 });
