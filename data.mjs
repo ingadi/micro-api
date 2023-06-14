@@ -51,7 +51,7 @@ function createRandomShop() {
 }
 
 function createRandomUser() {
-  const password = faker.string.alpha(7);
+  const password = faker.string.alpha(8);
   const username = faker.internet.userName();
 
   passwords.push({ username, password });
@@ -66,7 +66,7 @@ function createRandomUser() {
       '07[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
     ),
     status: faker.helpers.arrayElement(['Active', 'Inactive']),
-    username: faker.internet.userName(),
+    username,
     employeeNumber: `${faker.number.int({ min: 500, max: 2000 })}`,
     password: hashSync(password, salt),
     idNo: faker.helpers.regexpStyleStringParse(
