@@ -53,18 +53,19 @@ function createRandomShop() {
 function createRandomUser() {
   const password = faker.string.alpha(8);
   const username = faker.internet.userName();
+  const phoneNumber = faker.helpers.regexpStyleStringParse(
+    '07[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+  );
 
-  passwords.push({ username, password });
+  passwords.push({ username, phoneNumber, password });
 
   return {
     id: faker.string.uuid(),
     firstName: faker.person.firstName(),
     middleName: faker.person.middleName(),
     lastName: faker.person.lastName(),
-    role: faker.helpers.arrayElement(['Qitabu admin', 'Merchant admin']),
-    phoneNumber: faker.helpers.regexpStyleStringParse(
-      '07[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
-    ),
+    role: faker.helpers.arrayElement(['Admin', 'User']),
+    phoneNumber,
     status: faker.helpers.arrayElement(['Active', 'Inactive']),
     username,
     employeeNumber: `${faker.number.int({ min: 500, max: 2000 })}`,
@@ -129,10 +130,10 @@ fs.writeFile('db.json', JSON.stringify(data), (err) => {
   }
 });
 
-fs.writeFile('user-passwords.json', JSON.stringify(passwords), (err) => {
+fs.writeFile('passwords.json', JSON.stringify(passwords), (err) => {
   if (err) {
     console.error('Error creating user-passwords.json file:', err);
   } else {
-    console.log('user-passwords.json file created successfully.');
+    console.log('passwords.json file created successfully.');
   }
 });

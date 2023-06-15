@@ -1,22 +1,25 @@
 {
-  "name": "json-server",
+  "name": "micro-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon index.js",
-    "start": "node index.js"
+    "start": "json-server --port 8000 --watch ./db.json",
+    "start-auth": "node index.mjs",
+    "dev": "nodemon index.mjs"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "bcrypt-ts": "^3.0.1",
     "cors": "^2.8.5",
     "json-serve": "^0.1.0",
-    "json-server": "^0.17.3"
+    "json-server": "^0.17.3",
+    "jsonwebtoken": "^9.0.0"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.0.1",
+    "@faker-js/faker": "^8.0.2",
     "nodemon": "^2.0.22"
   }
 }
