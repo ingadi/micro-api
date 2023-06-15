@@ -3,16 +3,15 @@ import jsonServer from 'json-server';
 import { compareSync } from 'bcrypt-ts';
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
+import dotenv from 'dotenv';
 
+dotenv.config();
 const server = jsonServer.create();
 const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
 const db = JSON.parse(fs.readFileSync('./db.json', 'UTF-8'));
-const PORT = 8000;
-
-// Move to .env file
-const SECRET_KEY = '123456789'; // move to .env
 const expiresIn = '1h';
+const PORT = 8000;
 
 server.use(middlewares);
 server.use(cors());
@@ -58,15 +57,16 @@ server.post('/auth/signin', (req, res) => {
     return;
   }
 
-  res
-    .status(200)
-    .json({ user, access_token: jwt.sign(user, SECRET_KEY, { expiresIn }) });
+  res.status(200).json({
+    user,
+    access_token: jwt.sign(user, process.env.SECRET_KEY, { expiresIn }),
+  });
 });
 
-server.use(router);
+server.use('/api', router);
 
 server.listen(PORT, () => {
-  console.log(`JSON Server is running on http://localhost:${PORT}`);
+  console.log(`JSON Server is running on http://localhost/api:${PORT}`);
 });
 
 function isAuthenticated({ identifier, password }) {
