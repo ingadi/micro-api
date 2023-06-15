@@ -10,4 +10,3 @@ JSON-DB server deployed on cyclic.sh
 - https://www.npmjs.com/package/bcrypt-ts
 - https://chrisdevcode.hashnode.dev/how-to-create-and-deploy-a-json-server
 - https://jasonwatmore.com/fetch-add-bearer-token-authorization-header-to-http-request
-- https://www.youtube.com/watch?v=0eu4_lLFkGk
