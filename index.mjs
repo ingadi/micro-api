@@ -16,8 +16,8 @@ const PORT = 8000;
 server.use(middlewares);
 server.use(cors());
 server.use(jsonServer.bodyParser);
-// /^(?!\/auth).*$/
-server.use(/^\/api(?!\/(signin | signup)).*$/, (req, res, next) => {
+
+server.use(/^\/api(?!\/signin).*$/, (req, res, next) => {
   if (
     req.headers.authorization === undefined ||
     req.headers.authorization.split(' ')[0] !== 'Bearer'
@@ -48,7 +48,7 @@ server.use(/^\/api(?!\/(signin | signup)).*$/, (req, res, next) => {
   }
 });
 
-server.post('/auth/signin', (req, res) => {
+server.post('/api/signin', (req, res) => {
   const user = isAuthenticated(req.body);
 
   if (user === null) {
