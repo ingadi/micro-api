@@ -16,7 +16,8 @@ const PORT = 8000;
 server.use(middlewares);
 server.use(cors());
 server.use(jsonServer.bodyParser);
-server.use(/^(?!\/auth).*$/, (req, res, next) => {
+// /^(?!\/auth).*$/
+server.use(/^\/api(?!\/(signin | signup)).*$/, (req, res, next) => {
   if (
     req.headers.authorization === undefined ||
     req.headers.authorization.split(' ')[0] !== 'Bearer'
@@ -52,21 +53,21 @@ server.post('/auth/signin', (req, res) => {
 
   if (user === null) {
     const status = 401;
-    const message = 'Incorrect email or password';
+    const message = 'Incorrect identifier or password';
     res.status(status).json({ status, message });
     return;
   }
 
   res.status(200).json({
     user,
-    access_token: jwt.sign(user, process.env.SECRET_KEY, { expiresIn }),
+    accessToken: jwt.sign(user, process.env.SECRET_KEY, { expiresIn }),
   });
 });
 
 server.use('/api', router);
 
 server.listen(PORT, () => {
-  console.log(`JSON Server is running on http://localhost/api:${PORT}`);
+  console.log(`JSON Server is running on http://localhost:${PORT}/api`);
 });
 
 function isAuthenticated({ identifier, password }) {
