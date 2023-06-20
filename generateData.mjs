@@ -69,6 +69,7 @@ function createRandomUser() {
     status: faker.helpers.arrayElement(['Active', 'Inactive']),
     username,
     employeeNumber: `${faker.number.int({ min: 500, max: 2000 })}`,
+    hasUpdatedInitPassword: faker.helpers.arrayElement(['True', 'False']),
     password: hashSync(password, salt),
     idNo: faker.helpers.regexpStyleStringParse(
       '[1-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
