@@ -116,10 +116,13 @@ function createRandomCredit() {
   };
 }
 
+let productIdx = 0;
+const PRODUCTS = ['Standard', 'Silver', 'Gold'];
+
 function createRandomProduct() {
   return {
     id: faker.helpers.arrayElement(productIds),
-    name: faker.helpers.arrayElement(['Standard', 'Silver', 'Gold']),
+    name: `${PRODUCTS[productIdx++]}`,
     accessFee: `${faker.number.float({ min: 0, max: 5, precision: 0.1 })}`,
     interestRate: `${faker.number.float({ min: 0, max: 5, precision: 0.1 })}`,
     term: `${faker.number.int({ min: 0, max: 100 })}`,
@@ -135,7 +138,7 @@ const data = {
   users: faker.helpers.multiple(createRandomUser, { count: 50 }),
   consumers: faker.helpers.multiple(createRandomConsumer, { count: 50 }),
   credit: faker.helpers.multiple(createRandomCredit, { count: 50 }),
-  products: faker.helpers.multiple(createRandomProduct, { count: 50 }),
+  products: faker.helpers.multiple(createRandomProduct, { count: 3 }),
 };
 
 fs.writeFile('db.json', JSON.stringify(data), (err) => {
