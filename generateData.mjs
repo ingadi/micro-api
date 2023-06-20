@@ -108,7 +108,7 @@ function createRandomConsumer() {
 let productIdx = 0;
 function createRandomProduct() {
   return {
-    id: `${productIds[productIdx++]}`,
+    id: `${productIds[productIdx]}`,
     name: `${PRODUCTS[productIdx++]}`,
     accessFee: `${faker.number.float({ min: 0, max: 5, precision: 0.1 })}`,
     interestRate: `${faker.number.float({ min: 0, max: 5, precision: 0.1 })}`,
