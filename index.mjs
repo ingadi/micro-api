@@ -17,7 +17,7 @@ server.use(middlewares);
 server.use(cors());
 server.use(jsonServer.bodyParser);
 
-server.use(/^\/api(?!\/signin).*$/, (req, res, next) => {
+server.use(/^\/api(?!\/auth).*$/, (req, res, next) => {
   if (
     req.headers.authorization === undefined ||
     req.headers.authorization.split(' ')[0] !== 'Bearer'
@@ -31,7 +31,7 @@ server.use(/^\/api(?!\/signin).*$/, (req, res, next) => {
   try {
     const token = req.headers.authorization.split(' ')[1];
 
-    const decoded = jwt.verify(token, SECRET_KEY);
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
 
     // do something with decoded e.g. check if role is allowed to access
 
@@ -48,7 +48,7 @@ server.use(/^\/api(?!\/signin).*$/, (req, res, next) => {
   }
 });
 
-server.post('/api/signin', (req, res) => {
+server.post('/api/auth/signin', (req, res) => {
   const user = isAuthenticated(req.body);
 
   if (user === null) {
