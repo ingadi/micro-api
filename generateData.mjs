@@ -2,16 +2,17 @@ import { faker } from '@faker-js/faker';
 import fs from 'fs';
 import { genSaltSync, hashSync } from 'bcrypt-ts';
 
-const salt = genSaltSync(10);
-const merchantIds = Array.from({ length: 50 }, () => faker.string.uuid());
-const creditIds = Array.from({ length: 50 }, () => faker.string.uuid());
-const productIds = Array.from({ length: 50 }, () => faker.string.uuid());
-const consumerIds = Array.from({ length: 50 }, () => faker.string.uuid());
 const passwords = [];
+const merchantIds = Array.from({ length: 50 }, () => faker.string.uuid());
+const consumerIds = Array.from({ length: 50 }, () => faker.string.uuid());
+const productIds = Array.from({ length: 50 }, () => faker.string.uuid());
+const PRODUCTS = ['Standard', 'Silver', 'Gold'];
+const salt = genSaltSync(10);
 
+let merchantIdx = 0;
 function createRandomMerchant() {
   return {
-    id: faker.helpers.arrayElement(merchantIds),
+    id: `${merchantIds[merchantIdx++]}`,
     firstName: faker.person.firstName(),
     middleName: faker.person.middleName(),
     lastName: faker.person.lastName(),
@@ -79,9 +80,10 @@ function createRandomUser() {
   };
 }
 
+let consumerIdx = 0;
 function createRandomConsumer() {
   return {
-    id: faker.helpers.arrayElement(consumerIds),
+    id: `${consumerIds[consumerIdx++]}`,
     firstName: faker.person.firstName(),
     middleName: faker.person.middleName(),
     lastName: faker.person.lastName(),
@@ -103,31 +105,29 @@ function createRandomConsumer() {
   };
 }
 
-function createRandomCredit() {
-  return {
-    id: faker.helpers.arrayElement(creditIds),
-    consumerId: faker.helpers.arrayElement(consumerIds),
-    merchantId: faker.helpers.arrayElement(merchantIds),
-    productId: faker.helpers.arrayElement(productIds),
-    points: `${faker.number.int({ min: 500, max: 2000 })}`,
-    status: faker.helpers.arrayElement(['Active', 'Inactive']),
-    expiry: faker.date.soon(),
-    createdAt: faker.date.past(),
-  };
-}
-
 let productIdx = 0;
-const PRODUCTS = ['Standard', 'Silver', 'Gold'];
-
 function createRandomProduct() {
   return {
-    id: faker.helpers.arrayElement(productIds),
+    id: `${productIds[productIdx++]}`,
     name: `${PRODUCTS[productIdx++]}`,
     accessFee: `${faker.number.float({ min: 0, max: 5, precision: 0.1 })}`,
     interestRate: `${faker.number.float({ min: 0, max: 5, precision: 0.1 })}`,
     term: `${faker.number.int({ min: 0, max: 100 })}`,
     bad: `${faker.number.int({ min: 0, max: 100 })}`,
     lost: `${faker.number.int({ min: 0, max: 100 })}`,
+    createdAt: faker.date.past(),
+  };
+}
+
+function createRandomCredit() {
+  return {
+    id: faker.string.uuid(),
+    consumerId: faker.helpers.arrayElement(consumerIds),
+    merchantId: faker.helpers.arrayElement(merchantIds),
+    productId: faker.helpers.arrayElement(productIds),
+    points: `${faker.number.int({ min: 500, max: 2000 })}`,
+    status: faker.helpers.arrayElement(['Active', 'Inactive']),
+    expiry: faker.date.soon(),
     createdAt: faker.date.past(),
   };
 }
