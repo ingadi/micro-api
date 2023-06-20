@@ -5,7 +5,7 @@ import { genSaltSync, hashSync } from 'bcrypt-ts';
 const passwords = [];
 const merchantIds = Array.from({ length: 50 }, () => faker.string.uuid());
 const consumerIds = Array.from({ length: 50 }, () => faker.string.uuid());
-const productIds = Array.from({ length: 50 }, () => faker.string.uuid());
+const productIds = Array.from({ length: 3 }, () => faker.string.uuid());
 const PRODUCTS = ['Standard', 'Silver', 'Gold'];
 const salt = genSaltSync(10);
 
