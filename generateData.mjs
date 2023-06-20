@@ -5,6 +5,7 @@ import { genSaltSync, hashSync } from 'bcrypt-ts';
 const salt = genSaltSync(10);
 const merchantIds = Array.from({ length: 50 }, () => faker.string.uuid());
 const creditIds = Array.from({ length: 50 }, () => faker.string.uuid());
+const productIds = Array.from({ length: 50 }, () => faker.string.uuid());
 const consumerIds = Array.from({ length: 50 }, () => faker.string.uuid());
 const passwords = [];
 
@@ -107,10 +108,23 @@ function createRandomCredit() {
     id: faker.helpers.arrayElement(creditIds),
     consumerId: faker.helpers.arrayElement(consumerIds),
     merchantId: faker.helpers.arrayElement(merchantIds),
+    productId: faker.helpers.arrayElement(productIds),
     points: `${faker.number.int({ min: 500, max: 2000 })}`,
-    interestRate: `${faker.number.float({ min: 0, max: 5, precision: 0.1 })}`,
     status: faker.helpers.arrayElement(['Active', 'Inactive']),
     expiry: faker.date.soon(),
+    createdAt: faker.date.past(),
+  };
+}
+
+function createRandomProduct() {
+  return {
+    id: faker.helpers.arrayElement(productIds),
+    name: faker.helpers.arrayElement(['Standard', 'Silver', 'Gold']),
+    accessFee: `${faker.number.float({ min: 0, max: 5, precision: 0.1 })}`,
+    interestRate: `${faker.number.float({ min: 0, max: 5, precision: 0.1 })}`,
+    term: `${faker.number.int({ min: 0, max: 100 })}`,
+    bad: `${faker.number.int({ min: 0, max: 100 })}`,
+    lost: `${faker.number.int({ min: 0, max: 100 })}`,
     createdAt: faker.date.past(),
   };
 }
@@ -121,6 +135,7 @@ const data = {
   users: faker.helpers.multiple(createRandomUser, { count: 50 }),
   consumers: faker.helpers.multiple(createRandomConsumer, { count: 50 }),
   credit: faker.helpers.multiple(createRandomCredit, { count: 50 }),
+  products: faker.helpers.multiple(createRandomProduct, { count: 50 }),
 };
 
 fs.writeFile('db.json', JSON.stringify(data), (err) => {
