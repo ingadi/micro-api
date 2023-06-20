@@ -38,7 +38,7 @@ function createRandomShop() {
   return {
     id: faker.string.uuid(),
     code: faker.finance.pin(),
-    name: faker.lorem.slug({ max: 1 }),
+    name: faker.lorem.slug({ min: 1, max: 1 }),
     type: faker.helpers.arrayElement(['Wholesale', 'Retail']),
     phoneNumber: faker.helpers.regexpStyleStringParse(
       '07[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
