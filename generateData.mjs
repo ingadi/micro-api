@@ -5,6 +5,7 @@ import { genSaltSync, hashSync } from 'bcrypt-ts';
 const passwords = [];
 const merchantIds = Array.from({ length: 50 }, () => faker.string.uuid());
 const consumerIds = Array.from({ length: 50 }, () => faker.string.uuid());
+const creditIds = Array.from({ length: 50 }, () => faker.string.uuid());
 const productIds = Array.from({ length: 3 }, () => faker.string.uuid());
 const PRODUCTS = ['Standard', 'Silver', 'Gold'];
 const salt = genSaltSync(10);
@@ -119,15 +120,29 @@ function createRandomProduct() {
   };
 }
 
+let creditIdx = 0;
 function createRandomCredit() {
   return {
-    id: faker.string.uuid(),
+    id: `${creditIds[creditIdx++]}`,
     consumerId: faker.helpers.arrayElement(consumerIds),
     merchantId: faker.helpers.arrayElement(merchantIds),
     productId: faker.helpers.arrayElement(productIds),
     points: `${faker.number.int({ min: 500, max: 2000 })}`,
-    status: faker.helpers.arrayElement(['Active', 'Inactive']),
+    status: faker.helpers.arrayElement(['Active', 'Inactive', 'Settled']),
     expiry: faker.date.soon(),
+    createdAt: faker.date.past(),
+  };
+}
+
+function createRandomTransaction() {
+  return {
+    id: faker.string.uuid(),
+    creditId: faker.helpers.arrayElement(creditIds),
+    type: faker.helpers.arrayElement(['Issuance', 'Consumption', 'Settlement']),
+    credit: `${faker.number.int({ min: 0, max: 2000 })}`,
+    debit: `${faker.number.int({ min: 0, max: 2000 })}`,
+    interestRate: `${faker.number.float({ min: 0, max: 5, precision: 0.1 })}`,
+    accessFee: `${faker.number.float({ min: 0, max: 5, precision: 0.1 })}`,
     createdAt: faker.date.past(),
   };
 }
@@ -139,6 +154,7 @@ const data = {
   consumers: faker.helpers.multiple(createRandomConsumer, { count: 50 }),
   credit: faker.helpers.multiple(createRandomCredit, { count: 50 }),
   products: faker.helpers.multiple(createRandomProduct, { count: 3 }),
+  transactions: faker.helpers.multiple(createRandomTransaction, { count: 50 }),
 };
 
 fs.writeFile('db.json', JSON.stringify(data), (err) => {
