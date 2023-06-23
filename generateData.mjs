@@ -6,6 +6,7 @@ const passwords = [];
 const merchantIds = Array.from({ length: 50 }, () => faker.string.uuid());
 const consumerIds = Array.from({ length: 50 }, () => faker.string.uuid());
 const creditIds = Array.from({ length: 50 }, () => faker.string.uuid());
+const shopIds = Array.from({ length: 50 }, () => faker.string.uuid());
 const productIds = Array.from({ length: 3 }, () => faker.string.uuid());
 const PRODUCTS = ['Standard', 'Silver', 'Gold'];
 const salt = genSaltSync(10);
@@ -35,9 +36,10 @@ function createRandomMerchant() {
   };
 }
 
+let shopIdx = 0;
 function createRandomShop() {
   return {
-    id: faker.string.uuid(),
+    id: `${shopIds[shopIdx++]}`,
     code: faker.finance.pin(),
     name: faker.lorem.slug({ min: 1, max: 1 }),
     type: faker.helpers.arrayElement(['Wholesale', 'Retail']),
@@ -126,6 +128,7 @@ function createRandomCredit() {
     id: `${creditIds[creditIdx++]}`,
     consumerId: faker.helpers.arrayElement(consumerIds),
     merchantId: faker.helpers.arrayElement(merchantIds),
+    shopId: faker.helpers.arrayElement(shopIds),
     productId: faker.helpers.arrayElement(productIds),
     points: `${faker.number.int({ min: 500, max: 2000 })}`,
     status: faker.helpers.arrayElement(['Active', 'Inactive', 'Settled']),
