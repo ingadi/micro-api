@@ -11,28 +11,79 @@ const productIds = Array.from({ length: 3 }, () => faker.string.uuid());
 const PRODUCTS = ['Standard', 'Silver', 'Gold'];
 const salt = genSaltSync(10);
 
+// function createRandomMerchant() {
+//   return {
+//     id: `${merchantIds[merchantIdx++]}`,
+//     firstName: faker.person.firstName(),
+//     middleName: faker.person.middleName(),
+//     lastName: faker.person.lastName(),
+//     email: faker.internet.email(),
+//     phoneNumber: faker.helpers.regexpStyleStringParse(
+//       '07[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+//     ),
+//     idNo: faker.helpers.regexpStyleStringParse(
+//       '[1-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+//     ),
+//     country: faker.location.country(),
+//     city: faker.location.city(),
+//     town: faker.location.city(),
+//     region: faker.location.state(),
+//     category: faker.helpers.arrayElement(['Gold', 'Silver', 'Bronze']),
+//     postalAddress: faker.location.zipCode(),
+//     postalCode: faker.location.zipCode(),
+//     createdAt: faker.date.past(),
+//   };
+// }
+
 let merchantIdx = 0;
-function createRandomMerchant() {
-  return {
-    id: `${merchantIds[merchantIdx++]}`,
+function createRandomUser() {
+  const password = faker.string.alpha(8);
+  const username = faker.internet.userName();
+  const phoneNumber = faker.helpers.regexpStyleStringParse(
+    '07[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+  );
+
+  passwords.push({ username, phoneNumber, password });
+
+  const base = {
     firstName: faker.person.firstName(),
     middleName: faker.person.middleName(),
     lastName: faker.person.lastName(),
     email: faker.internet.email(),
-    phoneNumber: faker.helpers.regexpStyleStringParse(
-      '07[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
-    ),
+    phoneNumber,
+    username,
     idNo: faker.helpers.regexpStyleStringParse(
       '[1-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
     ),
-    country: faker.location.country(),
-    city: faker.location.city(),
-    town: faker.location.city(),
-    region: faker.location.state(),
-    category: faker.helpers.arrayElement(['Gold', 'Silver', 'Bronze']),
-    postalAddress: faker.location.zipCode(),
-    postalCode: faker.location.zipCode(),
+    status: faker.helpers.arrayElement(['Active', 'Inactive']),
+    hasInitPassword: faker.datatype.boolean({ probability: 0.5 }),
+    password: hashSync(password, salt),
     createdAt: faker.date.past(),
+  };
+
+  // users = ['merchant', 'admin']
+  const users = [
+    {
+      id: `${merchantIds[merchantIdx++]}`,
+      role: 'User',
+      country: faker.location.country(),
+      city: faker.location.city(),
+      town: faker.location.city(),
+      region: faker.location.state(),
+      category: faker.helpers.arrayElement(['Gold', 'Silver', 'Bronze']),
+      postalAddress: faker.location.zipCode(),
+      postalCode: faker.location.zipCode(),
+    },
+    {
+      id: faker.string.uuid(),
+      role: 'Admin',
+      employeeNumber: `${faker.number.int({ min: 500, max: 2000 })}`,
+    },
+  ];
+
+  return {
+    ...base,
+    ...users[Math.floor(Math.random() * users.length)],
   };
 }
 
@@ -54,34 +105,6 @@ function createRandomShop() {
     postalCode: faker.location.zipCode(),
     city: faker.location.city(),
     merchantId: faker.helpers.arrayElement(merchantIds),
-    createdAt: faker.date.past(),
-  };
-}
-
-function createRandomUser() {
-  const password = faker.string.alpha(8);
-  const username = faker.internet.userName();
-  const phoneNumber = faker.helpers.regexpStyleStringParse(
-    '07[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
-  );
-
-  passwords.push({ username, phoneNumber, password });
-
-  return {
-    id: faker.string.uuid(),
-    firstName: faker.person.firstName(),
-    middleName: faker.person.middleName(),
-    lastName: faker.person.lastName(),
-    role: faker.helpers.arrayElement(['Admin', 'User']),
-    phoneNumber,
-    status: faker.helpers.arrayElement(['Active', 'Inactive']),
-    username,
-    employeeNumber: `${faker.number.int({ min: 500, max: 2000 })}`,
-    hasInitPassword: faker.datatype.boolean({ probability: 0.5 }),
-    password: hashSync(password, salt),
-    idNo: faker.helpers.regexpStyleStringParse(
-      '[1-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
-    ),
     createdAt: faker.date.past(),
   };
 }
@@ -154,7 +177,6 @@ function createRandomTransaction() {
 }
 
 const data = {
-  merchants: faker.helpers.multiple(createRandomMerchant, { count: 50 }),
   shops: faker.helpers.multiple(createRandomShop, { count: 50 }),
   users: faker.helpers.multiple(createRandomUser, { count: 50 }),
   consumers: faker.helpers.multiple(createRandomConsumer, { count: 50 }),
