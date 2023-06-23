@@ -156,17 +156,29 @@ function createRandomConsumer() {
 }
 
 let productIdx = 0;
-function createRandomProduct() {
-  return {
-    id: `${productIds[productIdx]}`,
-    name: `${PRODUCTS[productIdx++]}`,
-    accessFee: `${faker.number.float({ min: 0, max: 5, precision: 0.1 })}`,
-    interestRate: `${faker.number.float({ min: 0, max: 5, precision: 0.1 })}`,
-    term: `${faker.number.int({ min: 0, max: 100 })}`,
-    bad: `${faker.number.int({ min: 0, max: 100 })}`,
-    lost: `${faker.number.int({ min: 0, max: 100 })}`,
-    createdAt: faker.date.past(),
-  };
+function createProduct() {
+  const products = [];
+
+  merchantIds.forEach((merchantId) => {
+    for (let i = 0; i < 3; i++) {
+      products.push({
+        id: `${productIds[i]}`,
+        name: `${PRODUCTS[i]}`,
+        merchantId,
+        accessFee: `${faker.number.float({ min: 0, max: 5, precision: 0.1 })}`,
+        interestRate: `${faker.number.float({
+          min: 0,
+          max: 5,
+          precision: 0.1,
+        })}`,
+        term: `${faker.number.int({ min: 0, max: 100 })}`,
+        bad: `${faker.number.int({ min: 0, max: 100 })}`,
+        lost: `${faker.number.int({ min: 0, max: 100 })}`,
+      });
+    }
+  });
+
+  return products;
 }
 
 let creditIdx = 0;
@@ -223,7 +235,7 @@ const data = {
   users: faker.helpers.multiple(createRandomUser, { count: 50 }),
   consumers: faker.helpers.multiple(createRandomConsumer, { count: 50 }),
   credit: faker.helpers.multiple(createRandomCredit, { count: 20 }),
-  products: faker.helpers.multiple(createRandomProduct, { count: 3 }),
+  products: [...createProduct()],
   transactions: faker.helpers.multiple(createRandomTransaction, { count: 50 }),
 };
 
