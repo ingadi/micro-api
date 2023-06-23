@@ -38,10 +38,13 @@ function createRandomMerchant() {
 
 let shopIdx = 0;
 function createRandomShop() {
+  const name = `${faker.lorem.slug({ min: 1, max: 1 })}`;
+  const _name = `${name[0].toUpperCase()}${name.slice(1)}`;
+
   return {
     id: `${shopIds[shopIdx++]}`,
     code: faker.finance.pin(),
-    name: faker.lorem.slug({ min: 1, max: 1 }),
+    name: _name,
     type: faker.helpers.arrayElement(['Wholesale', 'Retail']),
     phoneNumber: faker.helpers.regexpStyleStringParse(
       '07[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
