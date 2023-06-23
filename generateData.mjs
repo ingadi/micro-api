@@ -11,6 +11,9 @@ const productIds = Array.from({ length: 3 }, () => faker.string.uuid());
 const PRODUCTS = ['Standard', 'Silver', 'Gold'];
 const salt = genSaltSync(10);
 
+const MERCHANT_CONSUMERS = {};
+const MERCHANT_SHOPS = {};
+
 // function createRandomMerchant() {
 //   return {
 //     id: `${merchantIds[merchantIdx++]}`,
@@ -92,8 +95,17 @@ function createRandomShop() {
   const name = `${faker.lorem.slug({ min: 1, max: 1 })}`;
   const _name = `${name[0].toUpperCase()}${name.slice(1)}`;
 
+  const id = `${shopIds[shopIdx++]}`;
+  const merchantId = faker.helpers.arrayElement(merchantIds);
+
+  if (!MERCHANT_SHOPS[merchantId]) {
+    MERCHANT_SHOPS[merchantId] = [];
+  }
+
+  MERCHANT_SHOPS[merchantId].push(id);
+
   return {
-    id: `${shopIds[shopIdx++]}`,
+    id,
     code: faker.finance.pin(),
     name: _name,
     type: faker.helpers.arrayElement(['Wholesale', 'Retail']),
@@ -104,15 +116,24 @@ function createRandomShop() {
     postalAddress: faker.location.zipCode(),
     postalCode: faker.location.zipCode(),
     city: faker.location.city(),
-    merchantId: faker.helpers.arrayElement(merchantIds),
+    merchantId,
     createdAt: faker.date.past(),
   };
 }
 
 let consumerIdx = 0;
 function createRandomConsumer() {
+  const id = `${consumerIds[consumerIdx++]}`;
+  const merchantId = faker.helpers.arrayElement(merchantIds);
+
+  if (!MERCHANT_CONSUMERS[merchantId]) {
+    MERCHANT_CONSUMERS[merchantId] = [];
+  }
+
+  MERCHANT_CONSUMERS[merchantId].push(id);
+
   return {
-    id: `${consumerIds[consumerIdx++]}`,
+    id,
     firstName: faker.person.firstName(),
     middleName: faker.person.middleName(),
     lastName: faker.person.lastName(),
@@ -129,7 +150,7 @@ function createRandomConsumer() {
     city: faker.location.state(),
     town: faker.location.city(),
     region: faker.location.state(),
-    merchantId: faker.helpers.arrayElement(merchantIds),
+    merchantId,
     createdAt: faker.date.past(),
   };
 }
@@ -150,11 +171,32 @@ function createRandomProduct() {
 
 let creditIdx = 0;
 function createRandomCredit() {
+  let merchantId = faker.helpers.arrayElement(merchantIds);
+
+  let hasConsumerAndShop =
+    MERCHANT_CONSUMERS[merchantId] && MERCHANT_SHOPS[merchantId];
+
+  while (!hasConsumerAndShop) {
+    merchantId = faker.helpers.arrayElement(merchantIds);
+    hasConsumerAndShop =
+      MERCHANT_CONSUMERS[merchantId] && MERCHANT_SHOPS[merchantId];
+  }
+
+  const shopId =
+    MERCHANT_SHOPS[merchantId][
+      Math.floor(Math.random() * MERCHANT_SHOPS[merchantId].length)
+    ];
+
+  const consumerId =
+    MERCHANT_CONSUMERS[merchantId][
+      Math.floor(Math.random() * MERCHANT_CONSUMERS[merchantId].length)
+    ];
+
   return {
     id: `${creditIds[creditIdx++]}`,
-    consumerId: faker.helpers.arrayElement(consumerIds),
-    merchantId: faker.helpers.arrayElement(merchantIds),
-    shopId: faker.helpers.arrayElement(shopIds),
+    merchantId,
+    consumerId,
+    shopId,
     productId: faker.helpers.arrayElement(productIds),
     points: `${faker.number.int({ min: 500, max: 2000 })}`,
     status: faker.helpers.arrayElement(['Active', 'Inactive', 'Settled']),
@@ -180,7 +222,7 @@ const data = {
   shops: faker.helpers.multiple(createRandomShop, { count: 50 }),
   users: faker.helpers.multiple(createRandomUser, { count: 50 }),
   consumers: faker.helpers.multiple(createRandomConsumer, { count: 50 }),
-  credit: faker.helpers.multiple(createRandomCredit, { count: 50 }),
+  credit: faker.helpers.multiple(createRandomCredit, { count: 20 }),
   products: faker.helpers.multiple(createRandomProduct, { count: 3 }),
   transactions: faker.helpers.multiple(createRandomTransaction, { count: 50 }),
 };
