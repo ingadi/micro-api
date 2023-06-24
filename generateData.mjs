@@ -40,30 +40,6 @@ const MERCHANT_SHOPS = {};
 
 let merchantIdx = 0;
 function createRandomUser() {
-  const password = faker.string.alpha(8);
-  const username = faker.internet.userName();
-  const phoneNumber = faker.helpers.regexpStyleStringParse(
-    '07[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
-  );
-
-  passwords.push({ username, phoneNumber, password });
-
-  const base = {
-    firstName: faker.person.firstName(),
-    middleName: faker.person.middleName(),
-    lastName: faker.person.lastName(),
-    email: faker.internet.email(),
-    phoneNumber,
-    username,
-    idNo: faker.helpers.regexpStyleStringParse(
-      '[1-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
-    ),
-    status: faker.helpers.arrayElement(['Active', 'Inactive']),
-    hasInitPassword: faker.datatype.boolean({ probability: 0.5 }),
-    password: hashSync(password, salt),
-    createdAt: faker.date.past(),
-  };
-
   // users = ['merchant', 'admin']
   const users = [
     {
@@ -84,9 +60,35 @@ function createRandomUser() {
     },
   ];
 
+  const password = faker.string.alpha(8);
+  const username = faker.internet.userName();
+  const status = faker.helpers.arrayElement(['Active', 'Inactive']);
+  const phoneNumber = faker.helpers.regexpStyleStringParse(
+    '07[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+  );
+  const user = users[Math.floor(Math.random() * users.length)];
+
+  passwords.push({ username, phoneNumber, password, status, role: user.role });
+
+  const base = {
+    firstName: faker.person.firstName(),
+    middleName: faker.person.middleName(),
+    lastName: faker.person.lastName(),
+    email: faker.internet.email(),
+    phoneNumber,
+    username,
+    idNo: faker.helpers.regexpStyleStringParse(
+      '[1-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'
+    ),
+    status,
+    hasInitPassword: faker.datatype.boolean({ probability: 0.5 }),
+    password: hashSync(password, salt),
+    createdAt: faker.date.past(),
+  };
+
   return {
     ...base,
-    ...users[Math.floor(Math.random() * users.length)],
+    ...user,
   };
 }
 

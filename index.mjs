@@ -11,7 +11,7 @@ const router = jsonServer.router('db.json');
 const middlewares = jsonServer.defaults();
 const db = JSON.parse(fs.readFileSync('./db.json', 'UTF-8'));
 const expiresIn = '1h';
-const PORT = 8000;
+const PORT = 8080;
 
 server.use(middlewares);
 server.use(cors());
